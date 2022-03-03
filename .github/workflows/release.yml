@@ -6,6 +6,10 @@ on:
     tags:
       - v*
 
+permissions:
+  id-token: write # needs to log into aws
+  contents: write # needs to publish release
+
 defaults:
   run:
     shell: bash
@@ -67,9 +71,8 @@ jobs:
       - name: 'Configure AWS credentials'
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}}:role/ssm2ssm-tests
 
       - name: 'Run integration tests'
         env:
