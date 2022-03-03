@@ -48,6 +48,8 @@ jobs:
 
       - name: 'Run integration tests'
         run: bats -r tests/*.bats
+        env:
+          TEST_SSM_PREFIX: /test/ssm2ssm
 
   # precommit:
   #   name: 'Run precommit check'
