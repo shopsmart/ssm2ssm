@@ -1,7 +1,7 @@
 ---
 repository:
-  name: go-template
-  description: A template for golang applications
+  name: ssm2ssm
+  description: Copies SSM Parameters from one path to another.
   private: true
   has_issues: true
   default_branch: main
