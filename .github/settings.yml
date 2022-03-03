@@ -1,6 +1,7 @@
 ---
 repository:
   name: ssm2ssm
+  description: Copies SSM Parameters from one path to another.
   private: true
   has_issues: true
   default_branch: main
