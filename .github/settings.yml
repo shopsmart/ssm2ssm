@@ -2,7 +2,7 @@
 repository:
   name: ssm2ssm
   description: Copies SSM Parameters from one path to another.
-  private: true
+  private: true # TODO: Make this public for easy downloading
   has_issues: true
   default_branch: main
   allow_squash_merge: true
@@ -16,10 +16,6 @@ teams:
     permission: admin
   - name: developers
     permission: push
-  # For non-template repos:
-  # Owner team should be admin here. Ex:
-  # - name: web-team
-  #   permission: admin
 
 branches:
   - name: main
@@ -29,10 +25,16 @@ branches:
         dismiss_stale_reviews: false
         require_code_owner_reviews: true
         dismissal_restrictions: {}
-      required_status_checks: null
+      required_status_checks:
+        strict: true
+        contexts:
+          - Validate pull request
       enforce_admins: false
       required_linear_history: true
-      restrictions: null
+      restrictions:
+        users: []
+        teams: []
+        apps: []
   - name: '*-base'
     protection:
       required_pull_request_reviews:
@@ -40,7 +42,12 @@ branches:
         dismiss_stale_reviews: false
         require_code_owner_reviews: true
         dismissal_restrictions: {}
-      required_status_checks: null
+      required_status_checks:
+        strict: true
+        contexts: []
       enforce_admins: false
       required_linear_history: true
-      restrictions: null
+      restrictions:
+        users: []
+        teams: []
+        apps: []
