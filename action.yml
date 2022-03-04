@@ -21,6 +21,7 @@ runs:
   using: docker
   image: Dockerfile
   args:
+    - ssm2ssm
     - "${{ inputs.source-path }}"
     - "${{ inputs.destination-path }}"
     - ${{ inputs.overwrite && '--overwrite' || '' }}
