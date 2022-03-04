@@ -12,6 +12,6 @@ FROM alpine:3.15
 COPY --from=build /go/bin/ssm2ssm /usr/local/bin/ssm2ssm
 COPY docker/entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
 
 CMD [ "ssm2ssm" ]
