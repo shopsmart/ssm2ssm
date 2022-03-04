@@ -75,7 +75,7 @@ jobs:
           | while read -r param; do
             echo "[INFO ] Deleting parameter: $param" >&2
             aws ssm delete-parameter \
-              --name "$param" 2>&3
+              --name "$param"
           done
 
           echo "[INFO ] Sleeping for 30 seconds to allow SSM to propagate" >&2

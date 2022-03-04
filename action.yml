@@ -23,4 +23,4 @@ runs:
   args:
     - "${{ inputs.source-path }}"
     - "${{ inputs.destination-path }}"
-    - ${{ overwrite && "--overwrite" }}
+    - ${{ inputs.overwrite && "--overwrite" }}
