@@ -19,7 +19,7 @@ inputs:
 
 runs:
   using: docker
-  image: Dockerfile
+  image: docker/Dockerfile
   args:
     - ssm2ssm
     - "${{ inputs.source-path }}"

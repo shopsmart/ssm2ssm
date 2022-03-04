@@ -9,6 +9,9 @@ RUN go build -o /go/bin/ssm2ssm ./cmd/ssm2ssm
 
 FROM alpine:3.15
 
-COPY  --from=build /go/bin/ssm2ssm /usr/local/bin/ssm2ssm
+COPY --from=build /go/bin/ssm2ssm /usr/local/bin/ssm2ssm
+COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
 CMD [ "ssm2ssm" ]
