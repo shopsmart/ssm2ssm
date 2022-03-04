@@ -64,7 +64,7 @@ jobs:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ssm2ssm-tests
 
-      - name: 'Deletes existing parameters'
+      - name: 'Delete existing parameters'
         run: |
           set -eo pipefail
 
