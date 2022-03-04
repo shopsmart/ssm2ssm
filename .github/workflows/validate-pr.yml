@@ -86,8 +86,8 @@ jobs:
       - name: 'Run action'
         uses: ./
         with:
-          input-path: /aws/service/global-infrastructure/regions
-          output-path: /test/ssm2ssm-action
+          source-path: /aws/service/global-infrastructure/regions
+          destination-path: /test/ssm2ssm-action
 
       - name: 'Validate a parameter'
         run: |
