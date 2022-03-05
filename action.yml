@@ -24,4 +24,5 @@ runs:
     - ssm2ssm
     - "${{ inputs.source-path }}"
     - "${{ inputs.destination-path }}"
-    - ${{ inputs.overwrite && '--overwrite' || '' }}
+    - ${{ inputs.overwrite == 'true' && '--overwrite' || '' }}
+    - --verbose
