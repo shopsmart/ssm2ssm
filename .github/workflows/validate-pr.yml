@@ -93,17 +93,18 @@ jobs:
         run: |
           set -eo pipefail
 
-          aws ssm get-parameter \
-            --name "$SSMPATH/us-east-1" \
-            --with-decryption \
-            --no-cli-pager \
-          | jq -r '.Parameter.Value' \
-          | while read -r value; do
-            [ "$value" == us-east-1 ] || {
-              echo "[ERROR] value is not us-east-1" >&2
-              exit 1
-            }
-          done
+          value="$(
+            aws ssm get-parameter \
+              --name "$SSMPATH/us-east-1" \
+              --with-decryption \
+              --no-cli-pager \
+            | jq -r '.Parameter.Value'
+          )"
+
+          if [ "$value" != us-east-1 ]; then
+            echo "[ERROR] value is not us-east-1" >&2
+            exit 1
+          fi
         env:
           SSMPATH: /test/ssm2ssm-action
 
