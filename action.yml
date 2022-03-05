@@ -21,10 +21,11 @@ runs:
   using: docker
   image: Dockerfile
   args:
+    - sh
+    - -c
     - >-
-      sh -c "ssm2ssm
+      ssm2ssm
         '${{ inputs.source-path }}'
         '${{ inputs.destination-path }}'
         ${{ inputs.overwrite == 'true' && '--overwrite' || '' }}
         --verbose
-      "
