@@ -102,7 +102,7 @@ jobs:
           )"
 
           if [ "$value" != us-east-1 ]; then
-            echo "[ERROR] value is not us-east-1" >&2
+            echo "[INFO ] value is not us-east-1" >&2
             exit 1
           fi
         env:
