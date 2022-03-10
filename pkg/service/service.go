@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssm"
@@ -79,6 +81,8 @@ func (svc *Impl) PutParameters(path string, params map[string]string, overwrite 
 			}
 			return true
 		})
+
+		log.Debugf("Found %d existing parameters", len(existingParams))
 	}
 
 	for key, param := range params {
@@ -86,7 +90,8 @@ func (svc *Impl) PutParameters(path string, params map[string]string, overwrite 
 
 		if !overwrite {
 			if _, ok := existingParams[key]; ok {
-				return fmt.Errorf("cowardly refusing to overwrite: %s", paramPath)
+				log.Debugf("Found an existing parameter under %s", paramPath)
+				continue
 			}
 		}
 
@@ -98,6 +103,7 @@ func (svc *Impl) PutParameters(path string, params map[string]string, overwrite 
 			Value:     aws.String(param),
 		}
 
+		log.Debugf("Updating %s parameter", paramPath)
 		_, err = svc.SSMClient.PutParameter(putParameterInput)
 	}
 

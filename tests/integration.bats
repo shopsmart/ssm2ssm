@@ -57,15 +57,30 @@ function teardown_suite() {
   diff -y "$BATS_TEST_TMPDIR/expected.txt" "$BATS_TEST_TMPDIR/actual.txt"
 }
 
-@test "it should cowardly refuse to copy the ssm params from one path to another" {
+@test "it should not overwrite the ssm params that exist" {
   # Copy over the parameters ahead of time
   ssm_copy_params /aws/service/global-infrastructure/regions "$TEST_SSM_PREFIX"
 
+  # Change one of the values to know we did not overwrite its value
+  aws ssm put-parameter \
+    --name "$TEST_SSM_PREFIX/us-east-1" \
+    --value not-us-east-1 \
+    --type SecureString \
+    --overwrite
+
   run "$TEST_SSM2SSM_EXECUTABLE" /aws/service/global-infrastructure/regions "$TEST_SSM_PREFIX"
 
-  [ $status -ne 0 ]
+  [ $status -eq 0 ]
 
   echo "$output"
+
+  ssm_pull_params "$TEST_SSM_PREFIX" "$BATS_TEST_TMPDIR/actual.txt"
+  sed 's|/aws/service/global-infrastructure/regions|'"$TEST_SSM_PREFIX"'|' "$REGIONS_FILE" \
+    | sed 's|=us-east-1|=not-us-east-1|' \
+    | sort \
+  > "$BATS_TEST_TMPDIR/expected.txt"
+
+  diff -y "$BATS_TEST_TMPDIR/expected.txt" "$BATS_TEST_TMPDIR/actual.txt"
 }
 
 @test "it should copy the ssm params from one path to another overwriting the existing params" {

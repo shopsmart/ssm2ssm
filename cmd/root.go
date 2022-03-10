@@ -16,11 +16,9 @@ func New(version string, svc service.Service) *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "ssm2ssm",
 		Short: "Pulls SSM paramters into env format",
-		Long: `SSM2SSM pulls paramters from AWS SSM Param Store
-		and puts them in env format
+		Long: `SSM2SSM copies parameters from one SSM path to another
 
-		ssm2ssm /input/prefix /output/prefix
-		`,
+ssm2ssm /input/prefix /output/prefix`,
 		Args: cobra.MaximumNArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			var v bool

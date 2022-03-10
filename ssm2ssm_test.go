@@ -5,6 +5,7 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/aws/aws-sdk-go/service/ssm"
+	"github.com/golang/mock/gomock"
 
 	"github.com/shopsmart/ssm2ssm"
 	"github.com/shopsmart/ssm2ssm/internal/testutils"
@@ -30,7 +31,7 @@ var _ = Describe("Ssm2ssm", func() {
 		Expect(err).Should(BeNil())
 	})
 
-	It("Should copy the parameters from input to output", func() {
+	It("should copy the parameters from input to output", func() {
 		testutils.MockGetParametersByPath(client, InputPath, nil)
 		testutils.MockGetParametersByPath(client, OutputPath, []*ssm.Parameter{})
 		testutils.ExpectAllParametersToBePut(client, OutputPath, false)
@@ -39,15 +40,20 @@ var _ = Describe("Ssm2ssm", func() {
 		Expect(err).Should(BeNil())
 	})
 
-	It("Should cowardly refuse to copy the parameters from input to output", func() {
+	It("should skip over parameters that already exist", func() {
 		testutils.MockGetParametersByPath(client, InputPath, nil)
 		testutils.MockGetParametersByPath(client, OutputPath, nil)
 
+		client.
+			EXPECT().
+			PutParameter(gomock.Any()).
+			Times(0)
+
 		err = ssm2ssm.Copy(svc, InputPath, OutputPath, false)
-		Expect(err).ShouldNot(BeNil())
+		Expect(err).Should(BeNil())
 	})
 
-	It("Should overwrite the parameters currently under output", func() {
+	It("should overwrite the parameters currently under output", func() {
 		testutils.MockGetParametersByPath(client, InputPath, nil)
 		testutils.ExpectAllParametersToBePut(client, OutputPath, true)
 

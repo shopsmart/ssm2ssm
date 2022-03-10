@@ -30,7 +30,7 @@ var _ = Describe("Service", func() {
 		Expect(err).Should(BeNil())
 	})
 
-	It("Should get all parameters from path", func() {
+	It("should get all parameters from path", func() {
 		testutils.MockGetParametersByPath(client, inputPath, nil)
 
 		params, err := svc.GetParameters(inputPath)
@@ -38,7 +38,7 @@ var _ = Describe("Service", func() {
 		Expect(params).Should(Equal(testutils.ParametersMap))
 	})
 
-	It("Should copy all params to the new path", func() {
+	It("should copy all params to the new path", func() {
 		testutils.MockGetParametersByPath(client, inputPath, []*ssm.Parameter{})
 		testutils.ExpectAllParametersToBePut(client, outputPath, false)
 
@@ -46,14 +46,19 @@ var _ = Describe("Service", func() {
 		Expect(err).Should(BeNil())
 	})
 
-	It("Should cowardly refuse to overwrite existing params", func() {
+	It("should cowardly refuse to overwrite existing params", func() {
 		testutils.MockGetParametersByPath(client, outputPath, nil)
 
+		client.
+			EXPECT().
+			PutParameter(gomock.Any()).
+			Times(0)
+
 		err := svc.PutParameters(outputPath, testutils.ParametersMap, false)
-		Expect(err).ShouldNot(BeNil())
+		Expect(err).Should(BeNil())
 	})
 
-	It("Should overwrite existing params", func() {
+	It("should overwrite existing params", func() {
 		client.
 			EXPECT().
 			GetParametersByPathPages(gomock.Any(), gomock.Any()).
