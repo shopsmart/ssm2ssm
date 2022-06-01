@@ -2,7 +2,7 @@
 repository:
   name: ssm2ssm
   description: Copies SSM Parameters from one path to another.
-  private: true # TODO: Make this public for easy downloading
+  private: false
   has_issues: true
   default_branch: main
   allow_squash_merge: true
