@@ -1,0 +1,26 @@
+---
+
+name: ssm2ssm
+description: Copies ssm parameters from one path to another.
+
+inputs:
+  source-path:
+    description: Path to pull ssm parameters.
+    type: string
+    required: true
+  destination-path:
+    description: Path to put ssm parameters.
+    type: string
+    required: true
+  overwrite:
+    description: To overwrites existing destination parameters.
+    type: boolean
+    default: false
+
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - sh
+    - -c
+    - ssm2ssm '${{ inputs.source-path }}' '${{ inputs.destination-path }}' ${{ inputs.overwrite == 'true' && '--overwrite' || '' }} --verbose

@@ -51,6 +51,63 @@ jobs:
         env:
           TEST_SSM_PREFIX: /test/ssm2ssm
 
+  run-action:
+    name: 'Run the github action'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Configure AWS credentials'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ssm2ssm-tests
+
+      - name: 'Delete existing parameters'
+        run: |
+          set -eo pipefail
+
+          aws ssm get-parameters-by-path \
+            --path "$SSMPATH" \
+            --no-cli-pager \
+          | jq -r '.Parameters[].Name' \
+          | while read -r param; do
+            echo "[INFO ] Deleting parameter: $param" >&2
+            aws ssm delete-parameter \
+              --name "$param"
+          done
+
+          echo "[INFO ] Sleeping for 30 seconds to allow SSM to propagate" >&2
+          sleep 30
+        env:
+          SSMPATH: /test/ssm2ssm-action
+
+      - name: 'Run action'
+        uses: ./
+        with:
+          source-path: /aws/service/global-infrastructure/regions
+          destination-path: /test/ssm2ssm-action
+
+      - name: 'Validate a parameter'
+        run: |
+          set -eo pipefail
+
+          value="$(
+            aws ssm get-parameter \
+              --name "$SSMPATH/us-east-1" \
+              --with-decryption \
+              --no-cli-pager \
+            | jq -r '.Parameter.Value'
+          )"
+
+          if [ "$value" != us-east-1 ]; then
+            echo "[INFO ] value is not us-east-1" >&2
+            exit 1
+          fi
+        env:
+          SSMPATH: /test/ssm2ssm-action
+
   # precommit:
   #   name: 'Run precommit check'
   #   runs-on: ubuntu-latest
