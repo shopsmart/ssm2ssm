@@ -52,7 +52,7 @@ jobs:
           TEST_SSM_PREFIX: /test/ssm2ssm
 
   run-action:
-    name: 'Runs the github action'
+    name: 'Run the github action'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'

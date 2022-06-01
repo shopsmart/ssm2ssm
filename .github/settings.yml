@@ -29,7 +29,7 @@ branches:
         strict: true
         contexts:
           - Run tests
-          - Runs the github action
+          - Run the github action
       enforce_admins: false
       required_linear_history: true
       restrictions:
