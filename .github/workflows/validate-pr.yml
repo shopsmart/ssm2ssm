@@ -1,7 +1,10 @@
 ---
+
 name: 'Validate pull request'
 
-on: [workflow_dispatch, pull_request]
+on:
+  - workflow_dispatch
+  - pull_request
 
 defaults:
   run:
@@ -18,30 +21,25 @@ jobs:
     if: github.event.repository.name != 'go-template'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: 'Get go version'
-        id: goversion
-        run: |
-          set -eo pipefail
-          version="$(< .go-version)"
-          echo "::set-output name=version::$version"
       - name: 'Setup go'
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
-          go-version: ${{ steps.goversion.outputs.version }}
-
-      - name: 'Install dependencies'
-        run: go mod download
+          go-version-file: go.mod
+          cache-file: go.sum
 
       - name: 'Configure AWS credentials'
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ssm2ssm-tests
 
       - name: 'Run unit tests'
         run: go test -v ./...
+
+      - name: 'Setup homebrew'
+        uses: Homebrew/actions/setup-homebrew@master
 
       - name: 'Install BATS'
         run: brew install bats-core
@@ -56,10 +54,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: 'Configure AWS credentials'
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ssm2ssm-tests
