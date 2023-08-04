@@ -20,6 +20,7 @@
 /aws/service/global-infrastructure/regions/eu-west-1=eu-west-1
 /aws/service/global-infrastructure/regions/eu-west-2=eu-west-2
 /aws/service/global-infrastructure/regions/eu-west-3=eu-west-3
+/aws/service/global-infrastructure/regions/il-central-1=il-central-1
 /aws/service/global-infrastructure/regions/me-central-1=me-central-1
 /aws/service/global-infrastructure/regions/me-south-1=me-south-1
 /aws/service/global-infrastructure/regions/sa-east-1=sa-east-1
