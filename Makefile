@@ -1,11 +1,6 @@
 #!/usr/bin/env make
 
-test-fixtures:
-	# Validate authentication
-	aws sts get-caller-identity --no-cli-pager >/dev/null
-
-	# Generate tests/regions.txt
-	@$(MAKE) tests/regions.txt
+test-fixtures: tests/regions.txt
 
 .PHONY: tests/regions.txt # Forces rebuild
 tests/regions.txt:
