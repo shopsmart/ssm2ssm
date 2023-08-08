@@ -1,0 +1,75 @@
+---
+
+name: 'Update test fixtures'
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 9 * * 1' # Mondays at 9:00 AM
+  pull_request:
+    paths:
+      - Makefile
+      # Github actions will not run this again for the PR created
+      - tests/regions.txt
+
+permissions:
+  contents: write # publish PRs
+  id-token: write # aws login
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+
+      - name: 'Setup Homebrew'
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: 'Install jq'
+        run: brew install jq
+
+      - name: 'Configure AWS credentials'
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ssm2ssm-tests
+
+      - name: 'Generate test fixtures'
+        run: make test-fixtures
+
+      - name: 'Throw an error if the files changed'
+        if: github.event_name == 'pull_request'
+        run: '[[ $(git status --porcelain | wc -l) -eq 0 ]]'
+
+      - name: 'Get datetime'
+        id: datetime
+        env:
+          DATE_FORMAT: '%B %d, %Y %I:%M %p' # January 21, 2021 05:10 PM
+        run: |
+          today=$(date +"$DATE_FORMAT")
+          echo "today=$today" >> "$GITHUB_OUTPUT"
+
+      # Create pull request
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        if: github.event_name != 'pull_request'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: github/update-test-fixtures
+          base: main
+          committer: "GitHub Action <action@github.com>"
+          commit-message: Update test fixtures - ${{ steps.datetime.outputs.today }}
+          title: Update aws region test fixtures - ${{ steps.datetime.outputs.today }}
+          body: |
+            ## Problem
+
+            The list of available regions has been updated.
+
+            ## Solution
+
+            Update the test-fixtures so tests can pass.
