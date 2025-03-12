@@ -13,8 +13,9 @@ on:
       - tests/regions.txt
 
 permissions:
-  contents: write # publish PRs
-  id-token: write # aws login
+  contents: write      # push to branch
+  id-token: write      # aws login
+  pull-requests: write # publish PRs
 
 defaults:
   run:
