@@ -9,7 +9,10 @@
 /aws/service/global-infrastructure/regions/ap-southeast-2=ap-southeast-2
 /aws/service/global-infrastructure/regions/ap-southeast-3=ap-southeast-3
 /aws/service/global-infrastructure/regions/ap-southeast-4=ap-southeast-4
+/aws/service/global-infrastructure/regions/ap-southeast-5=ap-southeast-5
+/aws/service/global-infrastructure/regions/ap-southeast-7=ap-southeast-7
 /aws/service/global-infrastructure/regions/ca-central-1=ca-central-1
+/aws/service/global-infrastructure/regions/ca-west-1=ca-west-1
 /aws/service/global-infrastructure/regions/cn-north-1=cn-north-1
 /aws/service/global-infrastructure/regions/cn-northwest-1=cn-northwest-1
 /aws/service/global-infrastructure/regions/eu-central-1=eu-central-1
@@ -23,6 +26,7 @@
 /aws/service/global-infrastructure/regions/il-central-1=il-central-1
 /aws/service/global-infrastructure/regions/me-central-1=me-central-1
 /aws/service/global-infrastructure/regions/me-south-1=me-south-1
+/aws/service/global-infrastructure/regions/mx-central-1=mx-central-1
 /aws/service/global-infrastructure/regions/sa-east-1=sa-east-1
 /aws/service/global-infrastructure/regions/us-east-1=us-east-1
 /aws/service/global-infrastructure/regions/us-east-2=us-east-2
