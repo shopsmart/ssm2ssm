@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 'Setup Homebrew'
         uses: Homebrew/actions/setup-homebrew@master
@@ -35,7 +35,7 @@ jobs:
         run: brew install jq
 
       - name: 'Configure AWS credentials'
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ssm2ssm-tests
@@ -57,7 +57,7 @@ jobs:
 
       # Create pull request
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
