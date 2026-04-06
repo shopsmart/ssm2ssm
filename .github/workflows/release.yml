@@ -21,16 +21,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 'Setup go'
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
       - name: 'Run GoReleaser'
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           # either 'goreleaser' (default) or 'goreleaser-pro'
           distribution: goreleaser
@@ -42,7 +42,7 @@ jobs:
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
 
       - name: 'Upload artifacts'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ssm2ssm
           path: dist/*
@@ -53,7 +53,7 @@ jobs:
     needs: build
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 'Setup homebrew'
         uses: Homebrew/actions/setup-homebrew@master
@@ -62,13 +62,13 @@ jobs:
         run: brew install bats-core
 
       - name: 'Download artifacts'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ssm2ssm
           path: dist/
 
       - name: 'Configure AWS credentials'
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ssm2ssm-tests
