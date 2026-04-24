@@ -1,0 +1,7 @@
+application: ssm2ssm
+
+metadata:
+  team: techops
+  type: application
+  language: go
+  dependencies: gomod

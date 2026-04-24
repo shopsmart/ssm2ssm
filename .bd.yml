@@ -1,7 +1,0 @@
----
-name: ssm2ssm
-team: techops
-type: application
-tags:
-  language: go
-  dependencies: gomod
