@@ -39,7 +39,7 @@ jobs:
         run: go test -v ./...
 
       - name: 'Setup homebrew'
-        uses: Homebrew/actions/setup-homebrew@2026.09.13.1
+        uses: Homebrew/actions/setup-homebrew@2026.09.21.1
 
       - name: 'Install BATS'
         run: brew install bats-core
