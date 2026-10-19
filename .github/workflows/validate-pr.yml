@@ -39,10 +39,9 @@ jobs:
         run: go test -v ./...
 
       - name: 'Setup homebrew'
-        uses: Homebrew/actions/setup-homebrew@2026.10.12.1
-
-      - name: 'Install BATS'
-        run: brew install bats-core
+        uses: shopsmart/bd-actions/setup-homebrew@feat/setup-homebrew
+        with:
+          packages: bats-core
 
       - name: 'Run integration tests'
         run: bats -r tests/*.bats

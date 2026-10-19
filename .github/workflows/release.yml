@@ -56,10 +56,9 @@ jobs:
         uses: actions/checkout@v7
 
       - name: 'Setup homebrew'
-        uses: Homebrew/actions/setup-homebrew@2026.10.12.1
-
-      - name: 'Install BATS'
-        run: brew install bats-core
+        uses: shopsmart/bd-actions/setup-homebrew@feat/setup-homebrew
+        with:
+          packages: bats-core
 
       - name: 'Download artifacts'
         uses: actions/download-artifact@v8
